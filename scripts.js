@@ -126,14 +126,21 @@ function showErrorMessage() {
 }
 
 function fetchMagicCardsFromCsv() {
-    const cardNames = csvData.map(row => row['Card Name']);
-    const uniqueCardNames = [...new Set(cardNames)]; // Obtener nombres únicos de las cartas
-
-    const fetchPromises = uniqueCardNames.map(name => 
-        fetch(`https://api.magicthegathering.io/v1/cards?name=${encodeURIComponent(name)}`)
+    const fetchPromises = csvData.map(row => {
+        const name = row['Card Name'];
+        const setCode = row['Set Code'];
+        const quantity = row['Quantity'];
+        return fetch(`https://api.magicthegathering.io/v1/cards?name=${encodeURIComponent(name)}&set=${setCode}`)
             .then(response => response.json())
-            .then(data => data.cards[0] ? { name, imageUrl: data.cards[0].imageUrl } : { name, imageUrl: 'placeholder.png' })
-    );
+            .then(data => {
+                if (data.cards.length > 0) {
+                    const card = data.cards[0];
+                    return { name, setCode, quantity, imageUrl: card.imageUrl };
+                } else {
+                    return { name, setCode, quantity, imageUrl: 'placeholder.png' };
+                }
+            });
+    });
 
     Promise.all(fetchPromises).then(results => {
         displayCardGrid(results);
@@ -158,6 +165,9 @@ function displayCardGrid(cards) {
         cardImage.src = card.imageUrl;
         cardImage.alt = card.name;
         cardImage.style.cursor = 'pointer';
+        cardImage.onerror = function() {
+            cardImage.src = 'placeholder.png';
+        };
         cardImage.onclick = function() {
             showFullScreenImage(card.imageUrl);
         };
@@ -167,7 +177,7 @@ function displayCardGrid(cards) {
 
         const cardTitle = document.createElement('h5');
         cardTitle.classList.add('card-title');
-        cardTitle.textContent = card.name;
+        cardTitle.textContent = `${card.name} (${card.quantity})`;
 
         cardBody.appendChild(cardTitle);
         cardElement.appendChild(cardImage);
