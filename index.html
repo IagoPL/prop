@@ -8,32 +8,57 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="card mt-5">
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="card mt-5 w-100">
             <div class="card-body">
-                <h1 class="text-center">Carga de CSV</h1>
+                <h1 class="text-center">Carga de CSV y Búsqueda de Cartas</h1>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="csvFileInput">Subir archivo CSV:</label>
                             <input type="file" class="form-control-file" id="csvFileInput" accept=".csv">
                         </div>
-                        <button class="btn btn-primary btn-block" id="loadCsvButton">Cargar CSV</button>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <button class="btn btn-secondary btn-block mt-2" id="toggleViewButton">Mostrar cartas</button>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-4">
-                    <div class="col-md-10">
-                        <h2 class="text-center">Datos del CSV</h2>
-                        <table class="table table-striped table-dark" id="csvTable">
-                            <thead class="thead-dark">
-                                <tr id="csvHeader">
-                                    <!-- Los encabezados del CSV se cargarán aquí -->
-                                </tr>
-                            </thead>
-                            <tbody id="csvBody">
-                                <!-- Los datos del CSV se cargarán aquí -->
-                            </tbody>
-                        </table>
+                    <div class="col-md-12">
+                        <div id="confirmationMessage" class="alert alert-success text-center" role="alert" style="display: none;">
+                            ¡Archivo CSV cargado con éxito!
+                        </div>
+                        <div id="errorMessage" class="alert alert-danger text-center alert-dismissible fade show" role="alert" style="display: none;">
+                            <strong>Error:</strong> Falló la carga de las cartas o el archivo CSV tiene un formato incorrecto.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <h2 class="text-center" id="dataSourceTitle">Datos del CSV</h2>
+                        <div class="table-responsive" id="csvTableContainer">
+                            <table class="table table-striped table-dark" id="csvTable">
+                                <thead class="thead-dark">
+                                    <tr id="csvHeader">
+                                        <!-- Los encabezados del CSV se cargarán aquí -->
+                                    </tr>
+                                </thead>
+                                <tbody id="csvBody">
+                                    <!-- Los datos del CSV se cargarán aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="cardGrid" class="d-none">
+                            <h2 class="text-center">Cartas</h2>
+                            <div class="btn-group mb-3" role="group" aria-label="Tamaño de la cuadrícula">
+                                <button type="button" class="btn btn-primary" id="smallGridButton">Pequeño</button>
+                                <button type="button" class="btn btn-primary" id="mediumGridButton">Mediano</button>
+                                <button type="button" class="btn btn-primary" id="largeGridButton">Grande</button>
+                                <button type="button" class="btn btn-primary" id="extraLargeGridButton">Muy Grande</button>
+                            </div>
+                            <div class="row justify-content-center" id="cardGridContainer">
+                                <!-- Las cartas se mostrarán aquí -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,6 +67,7 @@
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="scripts.js"></script>
 </body>
 </html>
