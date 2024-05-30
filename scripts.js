@@ -5,6 +5,8 @@ const requiredHeaders = [
     'LOW', 'MID', 'MARKET'
 ];
 
+let csvData = [];
+
 document.getElementById('csvFileInput').addEventListener('change', function() {
     const input = document.getElementById('csvFileInput').files[0];
     if (input) {
@@ -21,7 +23,8 @@ document.getElementById('csvFileInput').addEventListener('change', function() {
                     results.meta.fields.shift();
                 }
                 if (results.errors.length === 0 && validateCsvHeaders(results.meta.fields)) {
-                    displayCsvData(results.data);
+                    csvData = results.data; // Store the CSV data
+                    displayCsvData(csvData);
                     showConfirmationMessage();
                 } else {
                     showErrorMessage();
@@ -46,7 +49,7 @@ document.getElementById('toggleViewButton').addEventListener('click', function()
         cardGrid.style.display = 'none';
         button.textContent = 'Mostrar cartas';
     } else {
-        fetchMagicCards();
+        fetchMagicCardsFromCsv();
         csvTableContainer.style.display = 'none';
         cardGrid.style.display = 'block';
         button.textContent = 'Mostrar datos CSV';
@@ -122,15 +125,21 @@ function showErrorMessage() {
     errorMessage.style.display = 'block';
 }
 
-function fetchMagicCards() {
-    fetch('https://api.magicthegathering.io/v1/cards')
-        .then(response => response.json())
-        .then(data => {
-            displayCardGrid(data.cards);
-        })
-        .catch(() => {
-            showErrorMessage();
-        });
+function fetchMagicCardsFromCsv() {
+    const cardNames = csvData.map(row => row['Card Name']);
+    const uniqueCardNames = [...new Set(cardNames)]; // Obtener nombres únicos de las cartas
+
+    const fetchPromises = uniqueCardNames.map(name => 
+        fetch(`https://api.magicthegathering.io/v1/cards?name=${encodeURIComponent(name)}`)
+            .then(response => response.json())
+            .then(data => data.cards[0] ? { name, imageUrl: data.cards[0].imageUrl } : { name, imageUrl: 'placeholder.png' })
+    );
+
+    Promise.all(fetchPromises).then(results => {
+        displayCardGrid(results);
+    }).catch(() => {
+        showErrorMessage();
+    });
 }
 
 function displayCardGrid(cards) {
@@ -148,8 +157,9 @@ function displayCardGrid(cards) {
         cardImage.classList.add('card-img-top');
         cardImage.src = card.imageUrl;
         cardImage.alt = card.name;
-        cardImage.onerror = function() {
-            cardImage.src = 'placeholder.png';
+        cardImage.style.cursor = 'pointer';
+        cardImage.onclick = function() {
+            showFullScreenImage(card.imageUrl);
         };
 
         const cardBody = document.createElement('div');
@@ -169,3 +179,14 @@ function displayCardGrid(cards) {
     document.getElementById('csvTableContainer').style.display = 'none';
     document.getElementById('cardGrid').classList.remove('d-none');
 }
+
+function showFullScreenImage(imageUrl) {
+    const modal = document.getElementById('fullScreenModal');
+    const fullScreenImage = document.getElementById('fullScreenImage');
+    fullScreenImage.src = imageUrl;
+    $(modal).modal('show');
+}
+
+document.getElementById('fullScreenModal').addEventListener('click', function() {
+    $(this).modal('hide');
+});
