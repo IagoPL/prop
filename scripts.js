@@ -5,6 +5,7 @@ document.getElementById('loadCsvButton').addEventListener('click', function() {
             header: true,
             complete: function(results) {
                 displayCsvData(results.data);
+                showConfirmationMessage();
             }
         });
     } else {
@@ -38,4 +39,12 @@ function displayCsvData(data) {
         });
         csvBody.appendChild(tr);
     });
+}
+
+function showConfirmationMessage() {
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    confirmationMessage.style.display = 'block';
+    setTimeout(() => {
+        confirmationMessage.style.display = 'none';
+    }, 3000);
 }
