@@ -6,6 +6,7 @@ const requiredHeaders = [
 ];
 
 let csvData = [];
+let filteredCards = [];
 
 document.getElementById('csvFileInput').addEventListener('change', function() {
     const input = document.getElementById('csvFileInput').files[0];
@@ -25,6 +26,7 @@ document.getElementById('csvFileInput').addEventListener('change', function() {
                 if (results.errors.length === 0 && validateCsvHeaders(results.meta.fields)) {
                     csvData = results.data; // Store the CSV data
                     displayCsvData(csvData);
+                    populateFilterOptions(csvData);
                     showConfirmationMessage();
                 } else {
                     showErrorMessage();
@@ -74,6 +76,10 @@ document.getElementById('largeGridButton').addEventListener('click', function() 
 document.getElementById('extraLargeGridButton').addEventListener('click', function() {
     document.getElementById('cardGridContainer').classList.remove('grid-small', 'grid-medium', 'grid-large');
     document.getElementById('cardGridContainer').classList.add('grid-extra-large');
+});
+
+document.getElementById('applyFiltersButton').addEventListener('click', function() {
+    applyFilters();
 });
 
 function validateCsvHeaders(headers) {
@@ -135,14 +141,29 @@ function fetchMagicCardsFromCsv() {
             .then(data => {
                 if (data.cards.length > 0) {
                     const card = data.cards[0];
-                    return { name, setCode, quantity, imageUrl: card.imageUrl };
+                    return { 
+                        name, 
+                        setCode, 
+                        quantity, 
+                        imageUrl: card.imageUrl, 
+                        color: card.colors ? card.colors.join(', ') : 'Colorless', 
+                        type: card.type ? card.type : 'Unknown' 
+                    };
                 } else {
-                    return { name, setCode, quantity, imageUrl: 'placeholder.png' };
+                    return { 
+                        name, 
+                        setCode, 
+                        quantity, 
+                        imageUrl: 'placeholder.png', 
+                        color: 'Unknown', 
+                        type: 'Unknown' 
+                    };
                 }
             });
     });
 
     Promise.all(fetchPromises).then(results => {
+        filteredCards = results;
         displayCardGrid(results);
     }).catch(() => {
         showErrorMessage();
@@ -190,6 +211,44 @@ function displayCardGrid(cards) {
     document.getElementById('cardGrid').classList.remove('d-none');
 }
 
+function populateFilterOptions(data) {
+    const setFilter = document.getElementById('setFilter');
+    const typeFilter = document.getElementById('typeFilter');
+
+    const sets = [...new Set(data.map(row => row['Set Name']))];
+    const types = [...new Set(data.map(row => row['Card Type']))];
+
+    sets.forEach(set => {
+        const option = document.createElement('option');
+        option.value = set;
+        option.textContent = set;
+        setFilter.appendChild(option);
+    });
+
+    types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        typeFilter.appendChild(option);
+    });
+}
+
+function applyFilters() {
+    const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
+    const setFilter = document.getElementById('setFilter').value;
+    const colorFilter = document.getElementById('colorFilter').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+
+    const filtered = filteredCards.filter(card => {
+        return (!nameFilter || card.name.toLowerCase().includes(nameFilter)) &&
+               (!setFilter || card.setCode === setFilter) &&
+               (!colorFilter || (card.color && card.color.includes(colorFilter))) &&
+               (!typeFilter || (card.type && card.type.includes(typeFilter)));
+    });
+
+    displayCardGrid(filtered);
+}
+
 function showFullScreenImage(imageUrl) {
     const modal = document.getElementById('fullScreenModal');
     const fullScreenImage = document.getElementById('fullScreenImage');
@@ -200,3 +259,4 @@ function showFullScreenImage(imageUrl) {
 document.getElementById('fullScreenModal').addEventListener('click', function() {
     $(this).modal('hide');
 });
+

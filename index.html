@@ -49,6 +49,37 @@
                         </div>
                         <div id="cardGrid" class="d-none">
                             <h2 class="text-center">Cartas</h2>
+                            <form id="filterForm" class="mb-4">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="nameFilter" placeholder="Nombre de la carta">
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-control" id="setFilter">
+                                            <option value="">Colección</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-control" id="colorFilter">
+                                            <option value="">Color</option>
+                                            <option value="White">Blanco</option>
+                                            <option value="Blue">Azul</option>
+                                            <option value="Black">Negro</option>
+                                            <option value="Red">Rojo</option>
+                                            <option value="Green">Verde</option>
+                                            <option value="Colorless">Incoloro</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-control" id="typeFilter">
+                                            <option value="">Tipo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn btn-primary btn-block" id="applyFiltersButton">Aplicar filtros</button>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="btn-group mb-3" role="group" aria-label="Tamaño de la cuadrícula">
                                 <button type="button" class="btn btn-primary" id="smallGridButton">Pequeño</button>
                                 <button type="button" class="btn btn-primary" id="mediumGridButton">Mediano</button>
