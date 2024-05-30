@@ -1,0 +1,28 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+    padding-top: 20px;
+}
+
+.card {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.table-dark {
+    background-color: #1e1e1e;
+}
+
+thead.thead-dark th {
+    color: #ffffff;
+    background-color: #333333;
+    border-color: #444444;
+}
+
+label, h1, h2 {
+    color: #ffffff;
+}
