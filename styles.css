@@ -7,10 +7,13 @@ body {
 .card {
     background-color: #1e1e1e;
     border: 1px solid #333333;
+    width: 100%;
 }
 
 .card-body {
     padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .table-dark {
@@ -25,4 +28,72 @@ thead.thead-dark th {
 
 label, h1, h2 {
     color: #ffffff;
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto; /* Mantener la proporción original */
+}
+
+.card-grid-item {
+    padding: 10px;
+}
+
+.grid-small .card-grid-item {
+    flex: 0 0 150px;
+    max-width: 150px;
+}
+
+.grid-medium .card-grid-item {
+    flex: 0 0 200px;
+    max-width: 200px;
+}
+
+.grid-large .card-grid-item {
+    flex: 0 0 250px;
+    max-width: 250px;
+}
+
+.grid-extra-large .card-grid-item {
+    flex: 0 0 350px;
+    max-width: 350px;
+}
+
+.card-placeholder {
+    width: 100%;
+    height: auto;
+    background-color: #444444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
+
+.table-responsive {
+    max-height: 500px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.container-fluid {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        max-height: 300px;
+    }
+}
+
+.modal-content {
+    background-color: #1e1e1e;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.card-title {
+    font-size: 1rem;
 }
