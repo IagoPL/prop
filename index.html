@@ -24,23 +24,6 @@
                     </div>
                 </div>
                 <div class="row justify-content-center mt-4">
-<<<<<<< HEAD
-                    <div class="col-md-10">
-                        <div id="confirmationMessage" class="alert alert-success text-center" role="alert" style="display: none;">
-                            ¡Archivo CSV cargado con éxito!
-                        </div>
-                        <h2 class="text-center">Datos del CSV</h2>
-                        <table class="table table-striped table-dark" id="csvTable">
-                            <thead class="thead-dark">
-                                <tr id="csvHeader">
-                                    <!-- Los encabezados del CSV se cargarán aquí -->
-                                </tr>
-                            </thead>
-                            <tbody id="csvBody">
-                                <!-- Los datos del CSV se cargarán aquí -->
-                            </tbody>
-                        </table>
-=======
                     <div class="col-md-12">
                         <div id="confirmationMessage" class="alert alert-success text-center" role="alert" style="display: none;">
                             ¡Archivo CSV cargado con éxito!
@@ -85,6 +68,7 @@
                                             <option value="Red">Rojo</option>
                                             <option value="Green">Verde</option>
                                             <option value="Colorless">Incoloro</option>
+                                            <option value="Multicolor">Multicolor</option>
                                         </select>
                                     </div>
                                     <div class="col">
@@ -93,7 +77,28 @@
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <button type="button" class="btn btn-primary btn-block" id="applyFiltersButton">Aplicar filtros</button>
+                                        <input type="number" class="form-control" id="manaCostFilter" placeholder="Coste de Maná">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="textFilter" placeholder="Texto de la carta">
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-control" id="rarityFilter">
+                                            <option value="">Rareza</option>
+                                            <option value="Common">Común</option>
+                                            <option value="Uncommon">Poco Común</option>
+                                            <option value="Rare">Raro</option>
+                                            <option value="Mythic">Mítica</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="powerFilter" placeholder="Poder">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="toughnessFilter" placeholder="Resistencia">
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn btn-secondary btn-block" id="clearFiltersButton">Borrar filtros</button>
                                     </div>
                                 </div>
                             </form>
@@ -107,7 +112,6 @@
                                 <!-- Las cartas se mostrarán aquí -->
                             </div>
                         </div>
->>>>>>> 0050425fdea9744915b51b9adb072ca95b55510e
                     </div>
                 </div>
             </div>
@@ -120,6 +124,23 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-body text-center">
                     <img id="fullScreenImage" src="" alt="Carta" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar la información completa de la carta -->
+    <div class="modal fade" id="cardInfoModal" tabindex="-1" role="dialog" aria-labelledby="cardInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cardInfoModalLabel">Información de la Carta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="cardInfoContent">
+                    <!-- La información de la carta se cargará aquí -->
                 </div>
             </div>
         </div>
